@@ -16,11 +16,8 @@ final class FilterCell: UICollectionViewCell {
         super.init(frame: frame)
         
         contentView.layer.cornerRadius = 16
-        contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.lightGray.cgColor
         
         titleLabel.font = .systemFont(ofSize: 12, weight: .regular)
-        titleLabel.textColor = .black
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(titleLabel)
@@ -37,7 +34,18 @@ final class FilterCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with title: String) {
+    func configure(with title: String, selected: Bool) {
         titleLabel.text = title
+
+        if selected {
+            contentView.backgroundColor = .darkGray
+            titleLabel.textColor = .white
+            contentView.layer.borderWidth = 0
+        } else {
+            contentView.backgroundColor = .white
+            titleLabel.textColor = .black
+            contentView.layer.borderWidth = 1
+            contentView.layer.borderColor = UIColor.lightGray.cgColor
+        }
     }
 }
