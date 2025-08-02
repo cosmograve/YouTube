@@ -24,7 +24,6 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         setupData()
         setupTableView()
-
     }
     
     private func setupData() {
@@ -78,7 +77,10 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if showShorts && indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: ShortsCell.reuseId, for: indexPath) as! ShortsCell
-            cell.configure(with: mockShorts)
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            cell.collectionView.tag = 100
+            cell.collectionView.reloadData()
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: VideoCell.reuseId, for: indexPath) as! VideoCell
@@ -118,5 +120,25 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 { return 130 }
         return 40
+    }
+}
+
+extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return mockShorts.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortsItemCell.reuseId, for: indexPath) as! ShortsItemCell
+        cell.configure(with: mockShorts[indexPath.item])
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 160, height: 240)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("short: \(mockShorts[indexPath.item].title)")
     }
 }

@@ -88,6 +88,6 @@ final class VideoCell: UITableViewCell {
     }
 
     @objc private func moreTapped() {
-        print("⋯ Кнопка more для видео: \(video?.title ?? "")")
+        print("Кнопка more для видео: \(video?.title ?? "")")
     }
 }
