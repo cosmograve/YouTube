@@ -15,10 +15,10 @@ final class MainTabBarController: UITabBarController {
     }
     
     private func setupTabs() {
-        let home = UINavigationController(rootViewController: HomeViewController())
+        let home = UINavigationController(rootViewController: MainViewController())
         home.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
         
-        let shorts = UINavigationController(rootViewController: HomeViewController())
+        let shorts = UINavigationController(rootViewController: MainViewController())
         shorts.tabBarItem = UITabBarItem(title: "Shorts", image: UIImage(systemName: "play.rectangle.fill"), tag: 1)
         
         viewControllers = [home, shorts]
