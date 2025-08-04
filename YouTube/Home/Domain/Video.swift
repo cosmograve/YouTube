@@ -8,7 +8,7 @@
 import Foundation
 
 struct Video {
-    let id: UUID
+    let id: Int
     let title: String
     let subtitle: String
     let thumbnailURL: String
@@ -16,6 +16,7 @@ struct Video {
 }
 
 struct ShortVideo {
+    let id: Int
     let title: String
     let views: String
     let imageName: String

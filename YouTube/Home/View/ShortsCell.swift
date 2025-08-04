@@ -20,7 +20,12 @@ final class ShortsCell: UITableViewCell {
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        
+        collectionView.register(
+            ShortsItemCell.self,
+            forCellWithReuseIdentifier: ShortsItemCell.reuseId
+        )
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(collectionView)
 

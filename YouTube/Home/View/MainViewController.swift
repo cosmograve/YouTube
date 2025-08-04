@@ -8,34 +8,23 @@
 import UIKit
 
 class MainViewController: UIViewController {
-
-    private let tableView = UITableView(frame: .zero, style: .grouped)
-
-    private var videos: [Video] = []
-    private var showShorts = true
     
-    let mockShorts: [ShortVideo] = [
-        ShortVideo(title: "DIY Toys | Satisfying And Relaxing", views: "24M views", imageName: "short1"),
-        ShortVideo(title: "Sunset Cinematic Vibes", views: "18M views", imageName: "short2"),
-        ShortVideo(title: "Mountain Drone Compilation", views: "12M views", imageName: "short3")
-    ]
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    
+    private let viewModel: MainViewViewModel
+    
+    init(viewModel: MainViewViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupData()
         setupTableView()
     }
     
-    private func setupData() {
-        videos = (1...3).map { i in
-            Video(id: UUID(),
-                  title: "Видео \(i)",
-                  subtitle: "Канал \(i) • \(Int.random(in: 5...100))K views",
-                  thumbnailURL: "avatarVideo",
-                  avatarURL: "avatarVideo")
-        }
-    }
-
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -56,47 +45,54 @@ class MainViewController: UIViewController {
         
         tableView.separatorStyle = .none
         tableView.sectionHeaderTopPadding = 0
+        
+        tableView.separatorStyle = .none
+        tableView.sectionHeaderTopPadding = 0
+        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 300
     }
     
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
-
     func numberOfSections(in tableView: UITableView) -> Int {
-        return showShorts ? 2 : 1
+        return 2
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if showShorts && section == 1 {
+        if section == 1 {
             return 1
         } else {
-            return videos.count
+            return viewModel.videos.count
         }
     }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if showShorts && indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: ShortsCell.reuseId, for: indexPath) as! ShortsCell
-            cell.collectionView.delegate = self
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: ShortsCell.reuseId,
+                                                     for: indexPath) as! ShortsCell
+            cell.collectionView.delegate   = self
             cell.collectionView.dataSource = self
-            cell.collectionView.tag = 100
             cell.collectionView.reloadData()
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: VideoCell.reuseId, for: indexPath) as! VideoCell
-            cell.configure(with: videos[indexPath.row])
+            let video = viewModel.videos[indexPath.row]   
+            let cell  = tableView.dequeueReusableCell(withIdentifier: VideoCell.reuseId,
+                                                      for: indexPath) as! VideoCell
+            cell.configure(with: video)
             return cell
         }
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if showShorts && indexPath.section == 1 {
-            return 280
-        } else {
-            return 300
-        }
+        if indexPath.section == 0 { return UITableView.automaticDimension }
+        
+        return 280
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderContainerView.reuseId) as! HeaderContainerView
@@ -116,7 +112,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             return container
         }
     }
-
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 { return 130 }
         return 40
@@ -125,20 +121,21 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return mockShorts.count
+        return viewModel.shorts.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortsItemCell.reuseId, for: indexPath) as! ShortsItemCell
-        cell.configure(with: mockShorts[indexPath.item])
+        
+        cell.configure(with: viewModel.shorts[indexPath.item])
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 160, height: 240)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("short: \(mockShorts[indexPath.item].title)")
+        print("short: \(viewModel.shorts[indexPath.item].title)")
     }
 }
