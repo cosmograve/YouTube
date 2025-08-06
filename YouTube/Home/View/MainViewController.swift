@@ -20,9 +20,15 @@ class MainViewController: UIViewController {
         tableView.register(VideoCell.self, forCellReuseIdentifier: VideoCell.reuseId)
         tableView.register(ShortsCell.self, forCellReuseIdentifier: ShortsCell.reuseId)
         tableView.register(HeaderContainerView.self, forHeaderFooterViewReuseIdentifier: HeaderContainerView.reuseId)
+        
         tableView.delegate = self
         tableView.dataSource = self
         view = tableView
+        
+        let header = HeaderContainerView(frame: CGRect(x: 0, y: 0,
+                                                       width: view.bounds.width,
+                                                       height: 130))
+        tableView.tableHeaderView = header
     }
     
     init(viewModel: MainViewViewModel) {
@@ -51,9 +57,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: ShortsCell.reuseId,
                                                      for: indexPath) as! ShortsCell
@@ -76,28 +80,24 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 0 {
-            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderContainerView.reuseId) as! HeaderContainerView
-            return header
-        } else {
-            let shortsLogo = UIImageView()
-            shortsLogo.image = UIImage(named: "shortsLogo")
-            shortsLogo.contentMode = .scaleAspectFit
-            let container = UIView()
-            container.backgroundColor = .white
-            container.addSubview(shortsLogo)
-            shortsLogo.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                shortsLogo.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
-                shortsLogo.centerYAnchor.constraint(equalTo: container.centerYAnchor)
-            ])
-            return container
-        }
+        guard section == 1 else {return nil}
+        let shortsLogo = UIImageView()
+        shortsLogo.image = UIImage(named: "shortsLogo")
+        shortsLogo.contentMode = .scaleAspectFit
+        let container = UIView()
+        container.backgroundColor = .white
+        container.addSubview(shortsLogo)
+        shortsLogo.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            shortsLogo.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
+            shortsLogo.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+        ])
+        return container
+        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 { return 130 }
-        return 40
+        section == 0 ? 0 : 40
     }
 }
 
