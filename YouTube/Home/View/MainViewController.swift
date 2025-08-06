@@ -10,8 +10,20 @@ import UIKit
 class MainViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    
     private let viewModel: MainViewViewModel
+    
+    override func loadView() {
+        tableView.separatorStyle = .none
+        tableView.sectionHeaderTopPadding = 0
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 300
+        tableView.register(VideoCell.self, forCellReuseIdentifier: VideoCell.reuseId)
+        tableView.register(ShortsCell.self, forCellReuseIdentifier: ShortsCell.reuseId)
+        tableView.register(HeaderContainerView.self, forHeaderFooterViewReuseIdentifier: HeaderContainerView.reuseId)
+        tableView.delegate = self
+        tableView.dataSource = self
+        view = tableView
+    }
     
     init(viewModel: MainViewViewModel) {
         self.viewModel = viewModel
@@ -22,35 +34,6 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
-    }
-    
-    private func setupTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        tableView.register(VideoCell.self, forCellReuseIdentifier: VideoCell.reuseId)
-        tableView.register(ShortsCell.self, forCellReuseIdentifier: ShortsCell.reuseId)
-        tableView.register(HeaderContainerView.self, forHeaderFooterViewReuseIdentifier: HeaderContainerView.reuseId)
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.separatorStyle = .none
-        tableView.sectionHeaderTopPadding = 0
-        
-        tableView.separatorStyle = .none
-        tableView.sectionHeaderTopPadding = 0
-        
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 300
     }
     
 }
@@ -89,7 +72,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 { return UITableView.automaticDimension }
-        
         return 280
     }
     
