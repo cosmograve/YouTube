@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct Video {
-    let id: Int
+struct Video: Equatable, Hashable {
+    let id: UUID
     let title: String
     let subtitle: String
     let thumbnailURL: String
     let avatarURL: String
 }
 
-struct ShortVideo {
-    let id: Int
+struct ShortVideo: Equatable, Hashable {
+    let id: UUID
     let title: String
     let views: String
     let imageName: String

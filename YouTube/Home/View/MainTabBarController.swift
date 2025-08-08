@@ -14,7 +14,7 @@ final class MainTabBarController: UITabBarController {
         let videoRepo = MockVideoRepository()
         let mainVM = MainViewViewModel(videoUseCase: videoRepo)
         
-        let homeVC = MainViewController(viewModel: mainVM)
+        let homeVC = HomeViewController(viewModel: mainVM)
         let navHome = UINavigationController(rootViewController: homeVC)
         navHome.tabBarItem = UITabBarItem(title: "Home",
                                           image: UIImage(systemName: "house.fill"), tag: 0)

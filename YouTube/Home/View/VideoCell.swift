@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class VideoCell: UITableViewCell {
+final class VideoCell: UICollectionViewCell {
     static let reuseId = "VideoCell"
 
     private let thumbnailImageView = UIImageView()
@@ -17,9 +17,9 @@ final class VideoCell: UITableViewCell {
     private let moreButton = UIButton(type: .system)
 
     private var video: Video?
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setup()
     }
 
