@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainHeaderView: UICollectionReusableView {
+final class HeaderContainerView: UICollectionReusableView {
         
     static let reuseId = "MainHeaderView"
         
@@ -107,7 +107,6 @@ final class MainHeaderView: UICollectionReusableView {
             filterBar.topAnchor.constraint(equalTo: dividerHorizontal.bottomAnchor, constant: 12),
             filterBar.leadingAnchor.constraint(equalTo: leadingAnchor),
             filterBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            filterBar.bottomAnchor.constraint(equalTo: bottomAnchor),   // задаёт итоговую высоту хедера
             filterBar.heightAnchor.constraint(equalToConstant: 44)
         ])
         
@@ -154,7 +153,7 @@ final class MainHeaderView: UICollectionReusableView {
     }
 }
 
-extension MainHeaderView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension HeaderContainerView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ cv: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         filters.count
